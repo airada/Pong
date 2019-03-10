@@ -29,7 +29,7 @@ public class Paddle {
         }
     }
     
-    public void getInputs()
+    public void isTouched()
     {
         //How do you get info on where user is touching?
     }
@@ -40,6 +40,6 @@ public class Paddle {
     }
     public void stopCollision()
     {
-        //ball already handles collision
+        //cap movement and wall_L and wall_R
     }
 }

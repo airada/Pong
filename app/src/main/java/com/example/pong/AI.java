@@ -15,7 +15,7 @@ public class AI {
     
     public AI(Game game)
     {
-        maxSpeed = 1; 
+        maxSpeed = 0.2; //temp value 
         ballPositionX = game.ball.ballPositionX;
     }
     
