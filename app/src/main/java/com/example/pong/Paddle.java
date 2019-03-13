@@ -16,15 +16,15 @@ public class Paddle {
     double size;
     double inputZone;
     
-    public Paddle(String topOrBottom)
+    public Paddle(int yPos)
     {
         paddlePositionX = 0.5;
-        switch (topOrBottom) {
-            case "top":
-                paddlePositionY = 1;
-                break;
-            case "bottom":
+        switch (yPos) {
+            case 0:
                 paddlePositionY = 0;
+                break;
+            case 1:
+                paddlePositionY = 1;
                 break;
         }
     }
@@ -33,7 +33,7 @@ public class Paddle {
     {
         //How do you get info on where user is touching?
     }
-    public void movePaddle(double newPosX)
+    public void updatePosition(double newPosX)
     {
         //on tap and drag, relocate paddle to dragged region
         paddlePositionX = newPosX;
@@ -41,5 +41,6 @@ public class Paddle {
     public void stopCollision()
     {
         //cap movement and wall_L and wall_R
+        //handled by gui?
     }
 }

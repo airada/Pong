@@ -8,18 +8,36 @@
  *
  * @author Noah
  */
+
 public class PaddleAI extends Paddle
 {
-    AI gameAI;
+    public AI gameAI;
     
-    public PaddleAI(String topOrBottom, Game game)
+    public PaddleAI(int topOrBottom)
     {
         super(topOrBottom);
-        gameAI = new AI(game);
     }
-    
+    public PaddleAI(int topOrBottom, GameState gameState)
+    {
+        super(topOrBottom);
+        gameAI = new AI(gameState);
+    }
     public void updatePosition()
     {
+        //Follow ball.ballPositionX
         
+        //Note that paddle can only move distance gameAI.maxSpeed per update
+        if (Math.abs(paddlePositionX - gameAI.getBallPositionX()) < gameAI.getMaxSpeed())
+        {
+            paddlePositionX = gameAI.getBallPositionX();
+        }
+        //ball is too far and paddle cannot reach ball, move towards ball
+        else
+        {
+            if (paddlePositionX > gameAI.getBallPositionX())
+                paddlePositionX -= gameAI.getMaxSpeed(); //move left
+            else
+                paddlePositionX += gameAI.getMaxSpeed(); //move right
+        }
     }
 }
