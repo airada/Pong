@@ -10,21 +10,30 @@
  */
 public class AI {
     
-    public double maxSpeed;
-    public double ballPositionX;
+    private double maxSpeed;
+    private double ballPositionX;
     
-    public AI(Game game)
+    public AI(GameState gameState)
     {
-        maxSpeed = 1; 
-        ballPositionX = game.ball.ballPositionX;
+        maxSpeed = 0.2; //temp value 
+        ballPositionX = gameState.ball.ballPositionX;
     }
     
-    public void setMaxSpeed(double speed)
+    public void setMaxSpeed(double newSpeed)
     {
-        maxSpeed = speed;
+        maxSpeed = newSpeed;
     }
     
-    public double getBallPosition()
+    public void setBallPositionX(double newBallPositionX)
+    {
+        ballPositionX = newBallPositionX;
+    }
+    
+    public double getMaxSpeed()
+    {
+        return maxSpeed;
+    }
+    public double getBallPositionX()
     {
         return ballPositionX;
     }

@@ -28,28 +28,39 @@ public class Ball {
     double ballPositionX;
     double ballPositionY;
     
-    public Ball(Game game)
+    boolean isEndless;
+    
+    public Ball(GameState gameState)
     {
         size = 0.25;
         xSpeed = 0.1;
         ySpeed = 0.1;
         
-        wall_L = game.wall_L;
-        wall_R = game.wall_R;
-        wall_T = game.wall_T;
-        wall_B = game.wall_B;
+        wall_L = gameState.wall_L;
+        wall_R = gameState.wall_R;
+        wall_T = gameState.wall_T;
+        wall_B = gameState.wall_B;
         
-        topPositionPaddleX = game.topPaddlePositionX;
-        topPositionPaddleY = game.topPaddlePositionY;
+        topPositionPaddleX = gameState.topPaddlePositionX;
+        topPositionPaddleY = gameState.topPaddlePositionY;
         
-        bottomPositionPaddleX = game.bottomPaddlePositionX;
-        bottomPositionPaddleY = game.bottomPaddlePositionY;
+        bottomPositionPaddleX = gameState.bottomPaddlePositionX;
+        bottomPositionPaddleY = gameState.bottomPaddlePositionY;
 
         ballPositionX = 0.5;
         ballPositionY = 0.2;
+        
+        if (gameState.mode == 2)
+        {
+            isEndless = true;
+        }
+        else
+        {
+            isEndless = false;
+        }
     }
     
-    public void bounce()
+    public void bounce(GameState gameState)
     {
         //WALLS: Hit left or right, flip xSpeed
         if (ballPositionX == wall_L || ballPositionX == wall_R)
@@ -61,7 +72,19 @@ public class Ball {
             ballPositionY >= topPositionPaddleY - size && ballPositionY <= topPositionPaddleY + size)
         {
             ySpeed = ySpeed * -1;
-        }   
+        }
+        
+        if (isEndless)
+        {
+            if (ballPositionY >= bottomPositionPaddleY - size && ballPositionY <= bottomPositionPaddleY + size) // bounce on bottom
+                gameState.score += 1;
+        }
+    }
+    
+    public void updatePosition()
+    {
+        ballPositionX += xSpeed;
+        ballPositionY += ySpeed;
     }
     
     public boolean outOfBounds()
