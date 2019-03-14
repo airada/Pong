@@ -12,7 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.RectF;
+import android.graphics.Rect;
 
 /**
  *
@@ -21,74 +21,41 @@ import android.graphics.RectF;
 
 public class Ball {
 
-    private RectF ball;
+    private Rect ball;
     float size;
-    double xSpeed;
-    double ySpeed;
+    int xSpeed;
+    int ySpeed;
 
-    double wall_L;
-    double wall_R;
-    double wall_T;
-    double wall_B;
-
-    double topPositionPaddleX;
-    double topPositionPaddleY;
-
-    double bottomPositionPaddleX;
-    double bottomPositionPaddleY;
-
-
-    public Ball(RectF ball) {
+    public Ball(Rect ball)
+    {
         this.size = 50;
-        //xSpeed = 0.1;
-        //ySpeed = 0.1;
+        this.xSpeed = 50;
+        this.ySpeed = 50;
         this.ball = ball;
-
-        //wall_L = 0.0;
-        //wall_R = gamePanel.getScreenWidth();
-        //wall_T = 0.0;
-        //wall_B = gamePanel.getScreenHeight();
-
-        //topPositionPaddleX = gamePanel.topPaddlePositionX;
-        //topPositionPaddleY = gamePanel.topPaddlePositionY;
-
-        //bottomPositionPaddleX = gamePanel.bottomPaddlePositionX;
-        //bottomPositionPaddleY = gamePanel.bottomPaddlePositionY;
-
-        //ballPositionX = 0.5;
-        //ballPositionY = 0.2;
     }
 
-    public void bounce() {
-        /*
+    public boolean intersect( Rect object ) {return ball.intersects(ball, object);}
+
+
+    public void bounce(Boolean intersectX, Boolean intersectY)
+    {
         //WALLS: Hit left or right, flip xSpeed
-        if (ballPositionX == wall_L || ballPositionX == wall_R)
-        {
-            xSpeed = xSpeed * -1;
-        }
+        if (intersectX == true) { xSpeed *= -1; }
         //PADDLES: Hit top or bottom, flip ySpeed
-        if (ballPositionY >= bottomPositionPaddleY - size && ballPositionY <= bottomPositionPaddleY + size ||
-                ballPositionY >= topPositionPaddleY - size && ballPositionY <= topPositionPaddleY + size)
-        {
-            ySpeed = ySpeed * -1;
-        }
-        */
+        else if (intersectY == true) { ySpeed *= -1; }
     }
 
-    public boolean outOfBounds() {
-        return false; //ballPositionY < wall_B || ballPositionY > wall_T;
-    }
-
-    public void draw(Point point, Canvas canvas) {
+    public void draw(Point point, Canvas canvas){
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
-        canvas.drawCircle(point.x, point.y, size, paint);
+        canvas.drawCircle(point.x,point.y, size, paint);
     }
 
 
-    public void update(Point point) {
-        ball.set(point.x - ball.width() / 2, point.y - ball.height() / 2,
-                point.x + ball.width() / 2, point.y + ball.height() / 2);
+    public void update(Point point, Boolean intersectX, Boolean intersectY) {
+        if (intersectX == true || intersectY == true) { bounce(intersectX,intersectY); }
+        ball.offset(xSpeed,ySpeed);
+        point.set(ball.centerX(),ball.centerY());
     }
 
 }

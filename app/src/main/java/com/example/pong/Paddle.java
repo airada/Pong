@@ -16,19 +16,23 @@ public class Paddle{
 
     private Rect paddle;
     int type;
-    float max_speed;
-
-    double inputZone;
+    int max_speed;
 
     public Paddle(Rect paddle, int type)
     {
         this.paddle = paddle;
         this.type = type;
+        this.max_speed = 50;
     }
+    public Rect getPaddle() {return this.paddle; }
 
-    public void movePaddle()
+    public boolean intersect(Rect object){ return paddle.intersects(paddle, object);}
+
+    public void movePaddle(boolean intersect)
     {
-
+        if(intersect==true)
+            max_speed*=-1;
+        paddle.offset(max_speed,0);
     }
 
     public boolean contains(float x, float y){
@@ -42,12 +46,12 @@ public class Paddle{
     }
 
 
-    public void update(Point point) {
+    public void update(Point point, Boolean intersect) {
         if(type==0) {
             paddle.set(point.x - paddle.width() / 2, point.y - paddle.height() / 2,
                     point.x + paddle.width() / 2, point.y + paddle.height() / 2);
         } else if(type==1) {
-            movePaddle();
+            movePaddle(intersect);
         }
 
     }

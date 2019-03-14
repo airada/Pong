@@ -16,6 +16,11 @@ import android.view.SurfaceView;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
+
+    //  Logistics
+    private int mode;
+    private int score;
+
     //  Game Objects
     private Paddle top_paddle;
     private Paddle bottom_paddle;
@@ -32,6 +37,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Rect rwall;
     private Rect bwall;
 
+
+
     //
     //      INITIALIZE OBJECTS
     //
@@ -42,9 +49,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(), this);
 
         //Game Objects Initialized
-        top_paddle = new Paddle(new Rect((getScreenWidth()/2)-175,200,(getScreenWidth()/2)+175,275), 0);
-        bottom_paddle = new Paddle(new Rect((getScreenWidth()/2)-175,getScreenHeight()-200,(getScreenWidth()/2)+175,getScreenHeight()-125), 0);
-        ball = new Ball(new RectF((getScreenWidth()/2)-25,(getScreenHeight()/2)-25,
+        top_paddle = new Paddle(new Rect((getScreenWidth()/2)-175,200,
+                (getScreenWidth()/2)+175,275), 1);
+        bottom_paddle = new Paddle(new Rect((getScreenWidth()/2)-175,getScreenHeight()-200,
+                (getScreenWidth()/2)+175,getScreenHeight()-125), 0);
+        ball = new Ball(new Rect((getScreenWidth()/2)-25,(getScreenHeight()/2)-25,
                 (getScreenWidth()/2)+25,(getScreenHeight()/2)+25));
 
         //Game Object Positions
@@ -71,23 +80,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public static int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
-
-    public Rect getLWall(){
-        return this.lwall;
-    }
-
-    public Rect getTWall(){
-        return this.twall;
-    }
-
-    public Rect getRWall(){
-        return this.rwall;
-    }
-
-    public Rect getBWall(){
-        return this.bwall;
-    }
-
 
     //
     //      GAME LOOP
@@ -130,27 +122,44 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 }
             case MotionEvent.ACTION_MOVE:
                 if(bottom_paddle.contains(event.getX(),event.getY())
-                        || ((event.getY() <=  bottom_paddlePoint.y+400) &&
-                        (event.getY() >=  bottom_paddlePoint.y-400))) {
+                        || ((event.getY() <=  bottom_paddlePoint.y+200) &&
+                        (event.getY() >=  bottom_paddlePoint.y-200))) {
                     bottom_paddlePoint.set((int) event.getX(), bottom_paddlePoint.y);
                 }
             case MotionEvent.ACTION_UP:
-                break;
-            case MotionEvent.ACTION_OUTSIDE:
                 break;
         }
 
         return true;
     }
 
+    //
+    //      COLLISIONS AND UPDATES
+    //
+    public void paddleCollision(){
+        if (top_paddle.intersect(rwall) || top_paddle.intersect(lwall))
+            top_paddle.update(top_paddlePoint, true);
+        else
+            top_paddle.update(top_paddlePoint, false);
+    }
+
+    public void ballCollision() {
+        if (ball.intersect(lwall) || ball.intersect(rwall))
+            ball.update(ballPoint, true, false);
+        else if (ball.intersect(twall) || ball.intersect(bwall) ||
+                ball.intersect(top_paddle.getPaddle()) || ball.intersect(bottom_paddle.getPaddle()))
+            ball.update(ballPoint, false, true);
+        else
+            ball.update(ballPoint, false, false);
+    }
 
     //
     //      UPDATE POSITIONS AND SCORES
     //
     public void update(){
-        top_paddle.update(top_paddlePoint);
-        bottom_paddle.update(bottom_paddlePoint);
-
+        paddleCollision();
+        ballCollision();
+        bottom_paddle.update(bottom_paddlePoint, false);
     }
 
 
