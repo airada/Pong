@@ -1,4 +1,5 @@
 package com.example.pong;
+/*
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,4 +38,6 @@ public class AddScore extends AppCompatActivity {
         // Resets fields
         editName.setText("");
     }
+
 }
+*/

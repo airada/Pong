@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package com.example.pong;
 /**
  *
  * @author Noah
@@ -18,15 +18,15 @@ public class Game {
     double wall_T;
     double wall_B;
     
-    Ball ball;
+    //Ball ball;
     double ballPositionX;
     double ballPositionY;
     
-    Paddle bottomPaddle;
+    //Paddle bottomPaddle;
     double bottomPaddlePositionX;
     double bottomPaddlePositionY;
     
-    Paddle topPaddle;
+    //Paddle topPaddle;
     double topPaddlePositionX;
     double topPaddlePositionY;
     
@@ -44,9 +44,9 @@ public class Game {
         wall_B = 0.0;
         wall_T = 1.0;
         
-        ball = new Ball(this);
-        topPaddle = new Paddle("top");
-        bottomPaddle = new Paddle("bottom");
+        //ball = new Ball(this);
+        //topPaddle = new Paddle("top");
+        //bottomPaddle = new Paddle("bottom");
         
         ticks = 0;
         hasWinner = false;
@@ -55,20 +55,20 @@ public class Game {
     public void update()
     {
         ticks += 1;
-        ball.ballPositionX += ball.xSpeed;
-        ball.ballPositionY += ball.ySpeed;
+        //ball.ballPositionX += ball.xSpeed;
+        //ball.ballPositionY += ball.ySpeed;
     }
     
     public void updateScore()
     {
-        if (ball.outOfBounds())
+        /*if (ball.outOfBounds())
         {
-            if (ball.ballPositionY > wall_T)
+          /*  if (ball.ballPositionY > wall_T)
                 score_B += 1;
             else if (ball.ballPositionY < wall_B)
                 score_T += 1;
-            
-            ticks = 0;
+
+          */  ticks = 0;
         }
     }
-}
+

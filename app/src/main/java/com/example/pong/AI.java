@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package com.example.pong;
 /**
  *
  * @author Noah
@@ -16,7 +16,7 @@ public class AI {
     public AI(GameState gameState)
     {
         maxSpeed = 0.2; //temp value 
-        ballPositionX = gameState.ball.ballPositionX;
+        //ballPositionX = gameState.ball.ballPositionX;
     }
     
     public void setMaxSpeed(double newSpeed)

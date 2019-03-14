@@ -1,46 +1,55 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
+package com.example.pong;
+
+import android.graphics.Point;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+
 
 /**
  *
  * @author Noah
  */
-public class Paddle {
-    
-    double paddlePositionX;
-    double paddlePositionY;
-    
-    double size;
+public class Paddle{
+
+    private Rect paddle;
+    int type;
+    float max_speed;
+
     double inputZone;
-    
-    public Paddle(int yPos)
+
+    public Paddle(Rect paddle, int type)
     {
-        paddlePositionX = 0.5;
-        switch (yPos) {
-            case 0:
-                paddlePositionY = 0;
-                break;
-            case 1:
-                paddlePositionY = 1;
-                break;
+        this.paddle = paddle;
+        this.type = type;
+    }
+
+    public void movePaddle()
+    {
+
+    }
+
+    public boolean contains(float x, float y){
+        return paddle.contains((int)x,(int)y);
+    }
+
+    public void draw(Canvas canvas){
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(paddle, paint);
+    }
+
+
+    public void update(Point point) {
+        if(type==0) {
+            paddle.set(point.x - paddle.width() / 2, point.y - paddle.height() / 2,
+                    point.x + paddle.width() / 2, point.y + paddle.height() / 2);
+        } else if(type==1) {
+            movePaddle();
         }
+
     }
-    
-    public void isTouched()
-    {
-        //How do you get info on where user is touching?
-    }
-    public void updatePosition(double newPosX)
-    {
-        //on tap and drag, relocate paddle to dragged region
-        paddlePositionX = newPosX;
-    }
-    public void stopCollision()
-    {
-        //cap movement and wall_L and wall_R
-        //handled by gui?
-    }
+
 }

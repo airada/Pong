@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package com.example.pong;
 /**
  *
  * @author Noah
@@ -35,12 +35,12 @@ public class GameState {
     {    
         this.mode = mode;
         
-        ball = new Ball(this);
-        bottomPaddle = new Paddle(0); //Player is always bottom paddle
+        //ball = new Ball(this);
+        //bottomPaddle = new Paddle(0); //Player is always bottom paddle
         score = 0; //only displayed and tracked when mode = 2
         
         // 0 : PvP | 1 : PvAI | 2: PvAI (Endless)
-        switch(mode)
+       /* switch(mode)
         {
             case 0:     topPaddle = new PaddleAI(1);  //calls constructor of Paddle for Player
                         break;
@@ -52,7 +52,7 @@ public class GameState {
                         topPaddle.gameAI.setMaxSpeed(1.0);
                         break;
         }
-        
+        */
         //TODO: SET BORDERS BY SCREEN POSITION (values temporary)
         wall_L = 0.0;
         wall_R = 1.0;
@@ -64,7 +64,7 @@ public class GameState {
     
     private boolean rallyComplete()
     {
-        return ball.ballPositionY < wall_B || ball.ballPositionY > wall_T;
+        return false; //ball.ballPositionY < wall_B || ball.ballPositionY > wall_T;
     }
     
     public int update()
@@ -74,9 +74,9 @@ public class GameState {
             hasWinner = true;
             return 1;
         }
-        ball.updatePosition();
-        bottomPaddle.updatePosition(0.5); //feed in touch input
-        topPaddle.updatePosition();
+        //ball.updatePosition();
+        //bottomPaddle.updatePosition(0.5); //feed in touch input
+        //topPaddle.updatePosition();
         return 0;
     }
 

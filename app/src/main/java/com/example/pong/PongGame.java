@@ -15,11 +15,11 @@ public class PongGame {
      * @param args the command line arguments
      */
     
-    Game gameState;
-    Paddle player;
-    Paddle opponent;
-    Ball ball;
-    AI logic;
+    //Game gameState;
+    //Paddle player;
+    //Paddle opponent;
+    //Ball ball;
+    //AI logic;
     
     
     public static void main(String[] args) {

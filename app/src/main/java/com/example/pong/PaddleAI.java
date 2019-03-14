@@ -3,6 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package com.example.pong;
+
+import android.graphics.Rect;
 
 /**
  *
@@ -12,11 +15,13 @@
 public class PaddleAI extends Paddle
 {
     public AI gameAI;
-    
-    public PaddleAI(int topOrBottom)
+
+    public PaddleAI(Rect paddle, int type)
     {
-        super(topOrBottom);
+        super(paddle, type);
     }
+
+    /*
     public PaddleAI(int topOrBottom, GameState gameState)
     {
         super(topOrBottom);
@@ -40,4 +45,5 @@ public class PaddleAI extends Paddle
                 paddlePositionX += gameAI.getMaxSpeed(); //move right
         }
     }
+    */
 }
