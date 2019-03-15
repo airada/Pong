@@ -1,7 +1,6 @@
 package com.example.pong;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +17,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         //setContentView(new GamePanel(this));
         configuringNextButton();
+        System.out.println("Score from Last Mode is: "+Integer.toString(GamePanel3.score));
     }
     public void configuringNextButton(){
         Button nextButton =  (Button) findViewById(R.id.pvai);

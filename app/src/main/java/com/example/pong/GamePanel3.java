@@ -1,6 +1,7 @@
 package com.example.pong;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,10 +12,13 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 
 
 public class GamePanel3 extends SurfaceView implements SurfaceHolder.Callback {
     private Thread3 thread;
+    private Context context;
     //  Logistics
     public static int score;
     private boolean gameover;
@@ -50,6 +54,8 @@ public class GamePanel3 extends SurfaceView implements SurfaceHolder.Callback {
 
         getHolder().addCallback(this);
         thread = new Thread3(getHolder(), this);
+        this.context = context;
+
         score = 0;
         gameover = false;
 
@@ -90,6 +96,13 @@ public class GamePanel3 extends SurfaceView implements SurfaceHolder.Callback {
     //
     //      GAME LOOP
     //
+
+    public static void startActivity(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("sub1","chemistry");
+        context.startActivity(intent);
+    }
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
@@ -130,6 +143,7 @@ public class GamePanel3 extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 if(gameover && System.currentTimeMillis() - gameOverTime >= 2000)
                     gameover = false;
+
             case MotionEvent.ACTION_MOVE:
                 if(bottom_paddle.contains(event.getX(),event.getY())
                         || ((event.getY() <=  bottom_paddlePoint.y+200) &&
@@ -155,9 +169,7 @@ public class GamePanel3 extends SurfaceView implements SurfaceHolder.Callback {
             ball.update(ballPoint, false, false);
             gameover = true;
             gameOverTime = System.currentTimeMillis();
-
-
-
+            startActivity(context);
         }
         else if (ball.intersect(top_paddle.getPaddle()) || ball.intersect(bottom_paddle.getPaddle())){
             if (ball.intersect(bottom_paddle.getPaddle())){score++;}
