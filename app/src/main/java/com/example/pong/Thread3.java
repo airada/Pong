@@ -70,7 +70,7 @@ public class Thread3 extends Thread{
                 System.out.println(averageFPS);
             }
         }
-        
+
 
     }
 

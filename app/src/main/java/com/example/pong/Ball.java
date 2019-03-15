@@ -25,7 +25,7 @@ public class Ball {
 
     public Ball(RectF ball)
     {
-        this.size = 50;
+        this.size = 25;
         this.xSpeed = 50;
         this.ySpeed = 50;
         this.ball = ball;
@@ -47,6 +47,7 @@ public class Ball {
 
     public void bounce(Boolean intersectX, Boolean intersectY)
     {
+        this.delay--;
         //WALLS: Hit left or right, flip xSpeed
         this.delay--;
         if (intersectX == true) { xSpeed *= -1; }
@@ -55,7 +56,9 @@ public class Ball {
             if (screensize / 2 > ball.centerY() && ySpeed < 0)
                 ySpeed *= -1;
             else if (screensize / 2 < ball.centerY() && ySpeed > 0)
+
                 ySpeed *= -1;}
+
     }
 
     public void draw(PointF point, Canvas canvas){

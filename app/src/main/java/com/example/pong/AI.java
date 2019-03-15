@@ -15,7 +15,7 @@ public class AI {
     
     public AI(GameState gameState)
     {
-        maxSpeed = 0.2; //temp value 
+        maxSpeed = 0.0000001; //temp value
         //ballPositionX = gameState.ball.ballPositionX;
     }
     
