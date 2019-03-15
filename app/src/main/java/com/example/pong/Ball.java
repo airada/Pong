@@ -8,6 +8,7 @@ package com.example.pong;
  *
  * @author Noah
  */
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,14 +27,16 @@ public class Ball {
     float size;
     float xSpeed;
     float ySpeed;
-
+    int delay;
+    static int screensize = Resources.getSystem().getDisplayMetrics().widthPixels;
 
     public Ball(RectF ball)
     {
-        this.size = 50;
+        this.size = 25;
         this.xSpeed = 50;
         this.ySpeed = 50;
         this.ball = ball;
+        this.delay = 0;
     }
 
     public RectF getBall() {return this.ball;}
@@ -49,10 +52,16 @@ public class Ball {
 
     public void bounce(Boolean intersectX, Boolean intersectY)
     {
+        this.delay--;
         //WALLS: Hit left or right, flip xSpeed
         if (intersectX == true) { xSpeed *= -1; }
         //PADDLES: Hit top or bottom, flip ySpeed
-        if (intersectY == true) { ySpeed *= -1; }
+        if (intersectY == true) {
+            if (screensize / 2 > ball.centerY() && ySpeed < 0)
+                ySpeed *= -1;
+            else if (screensize / 2 < ball.centerY() && ySpeed > 0)
+                ySpeed *= -1;
+        }
     }
 
     public void draw(PointF point, Canvas canvas){
