@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.MotionEvent;
@@ -27,15 +28,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Ball ball;
 
     //  Game Object Positions
-    private Point top_paddlePoint;
-    private Point bottom_paddlePoint;
-    private Point ballPoint;
+    private PointF top_paddlePoint;
+    private PointF bottom_paddlePoint;
+    private PointF ballPoint;
 
     //  Game Walls
-    private Rect lwall;
-    private Rect twall;
-    private Rect rwall;
-    private Rect bwall;
+    private RectF lwall;
+    private RectF twall;
+    private RectF rwall;
+    private RectF bwall;
 
 
 
@@ -49,23 +50,23 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(), this);
 
         //Game Objects Initialized
-        top_paddle = new Paddle(new Rect((getScreenWidth()/2)-175,200,
+        top_paddle = new Paddle(new RectF((getScreenWidth()/2)-175,200,
                 (getScreenWidth()/2)+175,275), 1);
-        bottom_paddle = new Paddle(new Rect((getScreenWidth()/2)-175,getScreenHeight()-200,
+        bottom_paddle = new Paddle(new RectF((getScreenWidth()/2)-175,getScreenHeight()-200,
                 (getScreenWidth()/2)+175,getScreenHeight()-125), 0);
-        ball = new Ball(new Rect((getScreenWidth()/2)-25,(getScreenHeight()/2)-25,
+        ball = new Ball(new RectF((getScreenWidth()/2)-25,(getScreenHeight()/2)-25,
                 (getScreenWidth()/2)+25,(getScreenHeight()/2)+25));
 
         //Game Object Positions
-        top_paddlePoint = new Point(getScreenWidth()/2,200);
-        bottom_paddlePoint = new Point(getScreenWidth()/2, getScreenHeight()-200);
-        ballPoint = new Point( getScreenWidth()/2, getScreenHeight()/2);
+        top_paddlePoint = new PointF(getScreenWidth()/2,200);
+        bottom_paddlePoint = new PointF(getScreenWidth()/2, getScreenHeight()-200);
+        ballPoint = new PointF( getScreenWidth()/2, getScreenHeight()/2);
 
         //Game Walls
-        lwall = new Rect(0, 0, 25, getScreenHeight());
-        twall = new Rect(0, 0, getScreenWidth(), 25);
-        rwall = new Rect(getScreenWidth()-25,0,getScreenWidth(),getScreenHeight());
-        bwall = new Rect(0,getScreenHeight()-25,getScreenWidth(),getScreenHeight());
+        lwall = new RectF(0, 0, 25, getScreenHeight());
+        twall = new RectF(0, 0, getScreenWidth(), 25);
+        rwall = new RectF(getScreenWidth()-25,0,getScreenWidth(),getScreenHeight());
+        bwall = new RectF(0,getScreenHeight()-25,getScreenWidth(),getScreenHeight());
 
         setFocusable(true);
     }

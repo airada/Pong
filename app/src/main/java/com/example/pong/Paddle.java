@@ -5,7 +5,9 @@ import android.graphics.Point;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 
 /**
@@ -14,25 +16,30 @@ import android.graphics.Rect;
  */
 public class Paddle{
 
-    private Rect paddle;
+    private RectF paddle;
     int type;
     int max_speed;
 
-    public Paddle(Rect paddle, int type)
+    public Paddle(RectF paddle, int type)
     {
         this.paddle = paddle;
         this.type = type;
         this.max_speed = 50;
     }
-    public Rect getPaddle() {return this.paddle; }
+    public RectF getPaddle() {return this.paddle; }
 
-    public boolean intersect(Rect object){ return paddle.intersects(paddle, object);}
+    public boolean intersect(RectF object){ return paddle.intersects(paddle, object);}
 
     public void movePaddle(boolean intersect)
     {
         if(intersect==true)
             max_speed*=-1;
-        paddle.offset(max_speed,0);
+    }
+
+    public void AI(RectF ball, PointF point, Boolean intersect)
+    {
+        paddle.set(ball.centerX() - paddle.width()/2, point.y - paddle.height() / 2,
+                ball.centerX() + paddle.width() / 2, point.y + paddle.height() / 2);
     }
 
     public boolean contains(float x, float y){
@@ -45,14 +52,19 @@ public class Paddle{
         canvas.drawRect(paddle, paint);
     }
 
-
-    public void update(Point point, Boolean intersect) {
-        if(type==0) {
+    public void update(PointF point, Boolean intersect) {
+        if (type == 0) {
             paddle.set(point.x - paddle.width() / 2, point.y - paddle.height() / 2,
                     point.x + paddle.width() / 2, point.y + paddle.height() / 2);
-        } else if(type==1) {
+        } else if (type == 1) {
             movePaddle(intersect);
+            paddle.offset(max_speed, 0);
         }
+    }
+
+    public void update(RectF ball, PointF point, Boolean intersect) {
+        movePaddle(intersect);
+        AI(ball, point, intersect);
 
     }
 

@@ -6,6 +6,7 @@
 package com.example.pong;
 
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 /**
  *
@@ -16,7 +17,7 @@ public class PaddleAI extends Paddle
 {
     public AI gameAI;
 
-    public PaddleAI(Rect paddle, int type)
+    public PaddleAI(RectF paddle, int type)
     {
         super(paddle, type);
     }
