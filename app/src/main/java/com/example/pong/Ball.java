@@ -4,21 +4,15 @@
  * and open the template in the editor.
  */
 package com.example.pong;
-/**
- *
- * @author Noah
- */
+
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
+
 import android.graphics.RectF;
 
-/**
- *
- * @author Noah
- */
 
 public class Ball {
 
@@ -26,7 +20,8 @@ public class Ball {
     float size;
     float xSpeed;
     float ySpeed;
-
+    int delay;
+    static int screensize = Resources.getSystem().getDisplayMetrics().widthPixels;
 
     public Ball(RectF ball)
     {
@@ -34,13 +29,16 @@ public class Ball {
         this.xSpeed = 50;
         this.ySpeed = 50;
         this.ball = ball;
+        this.delay = 0;
     }
 
     public RectF getBall() {return this.ball;}
 
+    public void setEmpty() { ball.setEmpty();}
+
     public boolean intersect( RectF object) {return ball.intersects(ball, object);}
 
-    public void increaseSpeed(RectF twall, RectF lwall) {
+    public void increaseSpeed() {
         if (Math.abs(xSpeed) < 83) xSpeed*=1.005;
         ySpeed*=1.005;
         System.out.println("xSpeed is "+Float.toString(xSpeed));
@@ -50,9 +48,14 @@ public class Ball {
     public void bounce(Boolean intersectX, Boolean intersectY)
     {
         //WALLS: Hit left or right, flip xSpeed
+        this.delay--;
         if (intersectX == true) { xSpeed *= -1; }
         //PADDLES: Hit top or bottom, flip ySpeed
-        if (intersectY == true) { ySpeed *= -1; }
+        if (intersectY == true) {
+            if (screensize / 2 > ball.centerY() && ySpeed < 0)
+                ySpeed *= -1;
+            else if (screensize / 2 < ball.centerY() && ySpeed > 0)
+                ySpeed *= -1;}
     }
 
     public void draw(PointF point, Canvas canvas){

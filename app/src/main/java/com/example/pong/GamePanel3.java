@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -14,12 +13,13 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 
-public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
-    private MainThread thread;
-
+public class GamePanel3 extends SurfaceView implements SurfaceHolder.Callback {
+    private Thread3 thread;
     //  Logistics
-    private int mode;
-    private int score;
+    public static int score;
+    private boolean gameover;
+    private long gameOverTime;
+    private Rect r = new Rect();
 
     //  Game Objects
     private Paddle top_paddle;
@@ -39,6 +39,9 @@ public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
 
 
 
+
+
+
     //
     //      INITIALIZE OBJECTS
     //
@@ -46,7 +49,9 @@ public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
         super(context);
 
         getHolder().addCallback(this);
-        thread = new MainThread(getHolder(), this);
+        thread = new Thread3(getHolder(), this);
+        score = 0;
+        gameover = false;
 
         //Game Objects Initialized
         top_paddle = new Paddle(new RectF((getScreenWidth()/2)-175,200,
@@ -66,6 +71,7 @@ public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
         twall = new RectF(0, 0, getScreenWidth(), 25);
         rwall = new RectF(getScreenWidth()-25,0,getScreenWidth(),getScreenHeight());
         bwall = new RectF(0,getScreenHeight()-25,getScreenWidth(),getScreenHeight());
+
 
         setFocusable(true);
     }
@@ -91,7 +97,7 @@ public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        thread = new MainThread(getHolder(), this);
+        thread = new Thread3(getHolder(), this);
 
         thread.setRunning(true);
         thread.start();
@@ -106,6 +112,7 @@ public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
                 thread.join();
             } catch(Exception e){e.printStackTrace();}
             retry = false;
+            return;
         }
     }
 
@@ -114,12 +121,15 @@ public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
     //
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_BUTTON_PRESS:
             case MotionEvent.ACTION_DOWN:
                 if (bottom_paddle.contains(event.getX(),event.getY())) {
                     bottom_paddlePoint.set((int) event.getX(), bottom_paddlePoint.y);
                 }
+                if(gameover && System.currentTimeMillis() - gameOverTime >= 2000)
+                    gameover = false;
             case MotionEvent.ACTION_MOVE:
                 if(bottom_paddle.contains(event.getX(),event.getY())
                         || ((event.getY() <=  bottom_paddlePoint.y+200) &&
@@ -129,34 +139,35 @@ public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_UP:
                 break;
         }
-
         return true;
     }
 
     //
     //      COLLISIONS AND UPDATES
     //
-    public void paddleCollision(){
-        if (top_paddle.intersect(rwall) || top_paddle.intersect(lwall))
-            top_paddle.update(top_paddlePoint, true);
-        else
-            top_paddle.update(top_paddlePoint, false);
-
-    }
-
     public void ballCollision() {
+
         if (ball.intersect(lwall) || ball.intersect(rwall))
             ball.update(ballPoint, true, false);
-        else if (ball.intersect(twall) || ball.intersect(bwall))
-            this.ball = new Ball(new RectF((getScreenWidth()/2)-25,(getScreenHeight()/2)-25,
-                    (getScreenWidth()/2)+25,(getScreenHeight()/2)+25));
+        else if (ball.intersect(twall) || ball.intersect(bwall)) {
+            System.out.println("Rally score is: " + Integer.toString(score));
+            destroy();
+            ball.update(ballPoint, false, false);
+            gameover = true;
+            gameOverTime = System.currentTimeMillis();
+
+
+
+        }
         else if (ball.intersect(top_paddle.getPaddle()) || ball.intersect(bottom_paddle.getPaddle())){
-            if (ball.intersect(top_paddle.getPaddle())){ball.increaseSpeed(twall, lwall);}
+            if (ball.intersect(bottom_paddle.getPaddle())){score++;}
+            if (ball.intersect(top_paddle.getPaddle())){ball.increaseSpeed();}
             ball.update(ballPoint, false, true);
         }
         else
             ball.update(ballPoint, false, false);
     }
+
 
     //
     //      UPDATE POSITIONS AND SCORES
@@ -174,8 +185,6 @@ public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        canvas.drawColor(Color.BLACK);
-
         //Game Objects
         top_paddle.draw(canvas);
         bottom_paddle.draw(canvas);
@@ -188,5 +197,36 @@ public class GamePanel3 extends GamePanel implements SurfaceHolder.Callback {
         canvas.drawRect(twall, paint);
         canvas.drawRect(rwall, paint);
         canvas.drawRect(bwall, paint);
+
+        if (gameover) {
+            Paint paint1 = new Paint();
+            paint1.setTextSize(100);
+            draw1(canvas, paint1, "GAME OVER");
+
+        }
     }
+    private void draw1(Canvas canvas, Paint paint, String text) {
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setColor(Color.rgb(255, 255, 255));
+        canvas.getClipBounds(r);
+        int cHeight = r.height();
+        int cWidth = r.width();
+        paint.getTextBounds(text, 0, text.length(), r);
+        float x = cWidth / 2f - r.width() / 2f - r.left;
+        float y = cHeight / 2f + r.height() / 2f - r.bottom;
+        canvas.drawText(text, x, y, paint);
+    }
+    public void destroy() {
+        ball.setEmpty();
+        top_paddle.setEmpty();
+        bottom_paddle.setEmpty();
+        lwall.setEmpty();
+        twall.setEmpty();
+        rwall.setEmpty();
+        bwall.setEmpty();
+    }
+
 }
+
+
+

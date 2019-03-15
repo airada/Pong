@@ -28,6 +28,8 @@ public class Paddle{
     }
     public RectF getPaddle() {return this.paddle; }
 
+    public void setEmpty() {paddle.setEmpty();}
+
     public boolean intersect(RectF object){ return paddle.intersects(paddle, object);}
 
     public void movePaddle(boolean intersect)
