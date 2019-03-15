@@ -1,10 +1,10 @@
 package com.example.pong;
-
-public class Score {
+import java.util.Date;
+public class Score implements Comparable<Score>{
     private String name;
     private int number;
     private String uid;
-
+    private Date timeScored;
     public Score()
     {
         name ="NA";
@@ -16,8 +16,16 @@ public class Score {
         this.name = name;
         this.number = number;
         this.uid = uid;
+        this.timeScored = new Date();
     }
+    public int compareTo(Score other)
+    {
+        if (other.number != this.number)
+            return this.number-other.number;
+        else
+            return this.timeScored.compareTo(other.timeScored);
 
+    }
     public String getName()
     {
         return name;
@@ -32,8 +40,15 @@ public class Score {
     {
         return uid;
     }
+    public Date getDate()
+    {
+        return timeScored;
+    }
     public String toString()
     {
         return name + ": " + number;
     }
+
+
+
 }
