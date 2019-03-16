@@ -23,7 +23,7 @@ public class Score implements Comparable<Score>{
         if (other.number != this.number)
             return this.number-other.number;
         else
-            return this.timeScored.compareTo(other.timeScored);
+            return this.name.compareTo(other.getName());
 
     }
     public String getName()

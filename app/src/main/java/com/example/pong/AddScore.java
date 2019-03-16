@@ -14,7 +14,6 @@ public class AddScore extends AppCompatActivity {
     private DatabaseReference myRef;
     private DatabaseReference usrRef;
     private FirebaseDatabase database;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +22,6 @@ public class AddScore extends AppCompatActivity {
         // Initializes the references to the database and contacts
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Score");
-        usrRef = database.getReference("Users");
     }
     public void addScore(View view)
     {
@@ -36,8 +34,8 @@ public class AddScore extends AppCompatActivity {
             String key = myRef.push().getKey(); // Generates unique random key
             Score c = new Score(name, 1, key);
 
-            myRef.child(key).child(name).setValue(c);   // replace key with the score value
-            usrRef.child(name).child("0").setValue(c); // replace "0" with the score to string
+            myRef.child(name).setValue(c);   // replace key with the score value
+            usrRef.child(name).child("1").setValue(c); // replace "0" with the score to string
 
             Toast.makeText(this, c.getName() + " successfully added.", Toast.LENGTH_LONG).show();
         }
