@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "45457985061",
+    "firebase_url": "https://pong-9d6bb.firebaseio.com",
+    "project_id": "pong-9d6bb",
+    "storage_bucket": "pong-9d6bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45457985061:android:b37e1d545b36a173",
+        "android_client_info": {
+          "package_name": "com.example.pong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45457985061-umev6jl8e13d1ut1ept7e4nbt4stp9no.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pong",
+            "certificate_hash": "020ca335995f52b12f8be55fc7996d8ff69e9753"
+          }
+        },
+        {
+          "client_id": "45457985061-46uhrihqrpadnum23qka4a0lrjsbiodp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3q1gfm5Ys9KjapPSw-rDJd40WqB7X694"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45457985061-bednjfi6h41kg0knsi3knup9hj7mbva2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
