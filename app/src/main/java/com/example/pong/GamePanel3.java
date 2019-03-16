@@ -41,11 +41,6 @@ public class GamePanel3 extends SurfaceView implements SurfaceHolder.Callback {
     private RectF rwall;
     private RectF bwall;
 
-
-
-
-
-
     //
     //      INITIALIZE OBJECTS
     //
@@ -98,7 +93,7 @@ public class GamePanel3 extends SurfaceView implements SurfaceHolder.Callback {
     //
 
     public static void startActivity(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, Scoreboard.class);
         intent.putExtra("sub1","chemistry");
         context.startActivity(intent);
     }
