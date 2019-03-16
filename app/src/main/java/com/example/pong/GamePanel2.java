@@ -49,15 +49,15 @@ public class GamePanel2 extends GamePanel implements SurfaceHolder.Callback {
 
         //Game Objects Initialized
         top_paddle = new Paddle(new RectF((getScreenWidth()/2)-175,200,
-                (getScreenWidth()/2)+175,275), 0);
-        bottom_paddle = new Paddle(new RectF((getScreenWidth()/2)-175,getScreenHeight()-200,
-                (getScreenWidth()/2)+175,getScreenHeight()-125), 0);
+                (getScreenWidth()/2)+175,235), 0);
+        bottom_paddle = new Paddle(new RectF((getScreenWidth()/2)-175,getScreenHeight()-(getScreenHeight()/4),
+                (getScreenWidth()/2)+175,getScreenHeight()+35), 0);
         ball = new Ball(new RectF((getScreenWidth()/2)-25,(getScreenHeight()/2)-25,
                 (getScreenWidth()/2)+25,(getScreenHeight()/2)+25));
 
         //Game Object Positions
-        top_paddlePoint = new PointF(getScreenWidth()/2,200);
-        bottom_paddlePoint = new PointF(getScreenWidth()/2, getScreenHeight()-200);
+        top_paddlePoint = new PointF(getScreenWidth()/2,0+(getScreenHeight()/4));
+        bottom_paddlePoint = new PointF(getScreenWidth()/2, getScreenHeight()+(getScreenHeight()/4));
         ballPoint = new PointF( getScreenWidth()/2, getScreenHeight()/2);
 
         //Game Walls
@@ -117,35 +117,55 @@ public class GamePanel2 extends GamePanel implements SurfaceHolder.Callback {
         // get pointer index from the event object
 
         // get pointer ID
-        int pointerId = event.getPointerId(0);
+        int pointerIdA = event.getPointerId(0);
 
         // get masked (not specific to a pointer) action
         int maskedAction = event.getActionMasked();
 
         switch (maskedAction) {
             case MotionEvent.ACTION_DOWN:
+                //Handle pointer A
+                int pointerIndexA = event.findPointerIndex(pointerIdA);
+                if (bottom_paddle.contains(event.getX(pointerIndexA),event.getY(pointerIndexA))) {
+                    bottom_paddlePoint.set((int) event.getX(pointerIndexA), bottom_paddlePoint.y);
+                }
+                if (top_paddle.contains(event.getX(pointerIndexA),event.getY(pointerIndexA))) {
+                    top_paddlePoint.set((int) event.getX(pointerIndexA), top_paddlePoint.y);
+                }
+
             case MotionEvent.ACTION_POINTER_DOWN:
-                int pointerIndex = event.findPointerIndex(pointerId);
+                //Handle pointer B
+                int pointerIndexB = event.getActionIndex();
+                if (bottom_paddle.contains(event.getX(pointerIndexB),event.getY(pointerIndexB))) {
+                    bottom_paddlePoint.set((int) event.getX(pointerIndexB), bottom_paddlePoint.y);
+                }
+                if (top_paddle.contains(event.getX(pointerIndexB),event.getY(pointerIndexB))) {
+                    top_paddlePoint.set((int) event.getX(pointerIndexB), top_paddlePoint.y);
+                }
 
-                if (bottom_paddle.contains(event.getX(pointerIndex),event.getY(pointerIndex))) {
-                    bottom_paddlePoint.set((int) event.getX(pointerIndex), bottom_paddlePoint.y);
-                }
-                if (top_paddle.contains(event.getX(pointerIndex),event.getY(pointerIndex))) {
-                    top_paddlePoint.set((int) event.getX(pointerIndex), top_paddlePoint.y);
-                }
             case MotionEvent.ACTION_MOVE:
-                pointerIndex = event.findPointerIndex(pointerId);
+                //Must handle individual pointer moves manually.
+                //https://stackoverflow.com/questions/9028357/android-multitouch-second-finger-action-move-ignored
+                int pointerCount = event.getPointerCount();
+                for (int i = 0; i < pointerCount; ++i) {
+                    //Handle pointer A
+                    int pointerIndex = i;
+                    int pointerId = event.getPointerId(pointerIndex);
 
-                if(bottom_paddle.contains(event.getX(pointerIndex),event.getY(pointerIndex))
-                        || ((event.getY(pointerIndex) <=  bottom_paddlePoint.y+200) &&
-                        (event.getY(pointerIndex) >=  bottom_paddlePoint.y-200))) {
-                    bottom_paddlePoint.set((int) event.getX(pointerIndex), bottom_paddlePoint.y);
+                    if (pointerId == 0 || pointerId == 1) {
+                        if (bottom_paddle.contains(event.getX(pointerId), event.getY(pointerId))
+                                || ((event.getY(pointerId) <= bottom_paddlePoint.y + 200) &&
+                                (event.getY(pointerId) >= bottom_paddlePoint.y - 200))) {
+                            bottom_paddlePoint.set((int) event.getX(pointerId), bottom_paddlePoint.y);
+                        }
+                        if (top_paddle.contains(event.getX(pointerId), event.getY(pointerId))
+                                || ((event.getY(pointerId) <= top_paddlePoint.y + 200) &&
+                                (event.getY(pointerId) >= top_paddlePoint.y - 200))) {
+                            top_paddlePoint.set((int) event.getX(pointerId), top_paddlePoint.y);
+                        }
+                    }
                 }
-                if(top_paddle.contains(event.getX(pointerIndex),event.getY(pointerIndex))
-                        || ((event.getY(pointerIndex) <=  top_paddlePoint.y+200) &&
-                        (event.getY(pointerIndex) >=  top_paddlePoint.y-200))) {
-                    top_paddlePoint.set((int) event.getX(pointerIndex), top_paddlePoint.y);
-                }
+
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_CANCEL:

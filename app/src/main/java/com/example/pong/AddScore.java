@@ -1,6 +1,4 @@
 package com.example.pong;
-
-
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +14,7 @@ public class AddScore extends AppCompatActivity {
     private DatabaseReference myRef;
     private DatabaseReference usrRef;
     private FirebaseDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
